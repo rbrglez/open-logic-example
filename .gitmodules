@@ -1,0 +1,6 @@
+[submodule "local-cores/development/open-logic"]
+	path = local-cores/development/open-logic
+	url = git@github.com:open-logic/open-logic.git
+[submodule "local-cores/stable/open-logic"]
+	path = local-cores/stable/open-logic
+	url = git@github.com:open-logic/open-logic.git

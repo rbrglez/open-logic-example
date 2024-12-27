@@ -1,0 +1,26 @@
+CAPI=2:
+
+name : ::my_target:0.1.0
+description : my example target core
+
+filesets:
+  axi-dev-files:
+    depend: 
+      - "^open-logic:open-logic-dev:axi:3.0.0"
+
+  axi-files:
+    depend: 
+      - "^open-logic:open-logic:axi:3.0.0"
+
+targets:
+  axi-dev-target:
+    filesets:
+      - "axi-dev-files"
+    toplevel: "olo_axi_master_full"
+    default_tool: "vivado"
+
+  axi-target:
+    filesets:
+      - "axi-files"
+    toplevel: "olo_axi_master_full"
+    default_tool: "vivado"
