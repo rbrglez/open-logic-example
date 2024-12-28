@@ -53,7 +53,42 @@ Now use fusesoc `run` command or `Makefile` wrapper
 make run-stable-target
 ```
 
-This command will download stable open-logic repository to `~/.local/fusesoc`, but it won't use those files!
+This command will download stable open-logic repository to `~/.cache/fusesoc`, but it won't use those files!
 
 Check out which files were actually used:
 `build/my_target_0.1.0/axi-target-vivado/src/open-logic_open-logic_axi_3.0.2/vhdl/olo_axi_master_full.vhd`
+
+
+## Creating Custom Remote Cores
+
+Check out `remote-cores/development/custom-open-logic/olo_fifo.core`.
+
+`olo_fifo.core` is a custom core based on `olo_base.core`, but with a focus solely on FIFO files and their dependencies. It demonstrates an important behavior of core files managed by FuseSoC.
+
+When a core file includes a `provider` key, it changes the way source files are resolved. Instead of searching for source files within the local directory of the core file itself, FuseSoC will download the entire repository specified in the provider key to the `~/.cache/fusesoc` directory.
+
+From there, FuseSoC will reference and add source files starting from the top-level directory of the downloaded repository, not from the local directory where the core file resides.
+
+This behavior is crucial to understand when working with core files that rely on external repositories for their source files, as it can affect how and where the source files are retrieved during the build process.
+
+Previously, the behavior was somewhat unclear due to the existence of both `olo_base.core` and `olo_base_dev.core`.
+
+- `olo_base.core` included a `provider` key, which caused FuseSoC to download the entire repository to `~/.cache/fusesoc`.
+- `olo_base_dev.core`, on the other hand, did not include the `provider` key, so it sourced files locally.
+
+It's important to note that `olo_base.core` (the one with the `provider` key) has no direct connection to the `olo_base.core` file in the downloaded repository located in `~/.cache/fusesoc`. As a result, the core file **MUST** specify the full path from the root of the downloaded repository to the files it wants to include. 
+
+**Why Did This Work Previously?**
+
+You might wonder why this setup worked without errors even though the paths in olo_base.core were incorrect. When the repository was downloaded, FuseSoC initially attempted to locate the source files within the downloaded repository. When it couldn't find them there, it looked in the current directory.
+
+However, this fallback mechanism didn't retrieve the correct files; instead, it found the development files. This is why the process appeared to work, but it was actually pulling in the wrong files — the development versions — instead of the intended production sources.
+
+
+### How to use custom remote cores
+
+```bash
+make init-remote-custom-open-logic-fifo
+make init-my-target
+make run-custom-fifo-target
+```
