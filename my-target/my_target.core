@@ -12,6 +12,10 @@ filesets:
     depend: 
       - "^open-logic:open-logic:axi:3.0.0"
 
+  fifo-custom-files:
+    depend:
+      - "^open-logic-custom:open-logic-custom:fifo:3.0.2"
+      
 targets:
   axi-dev-target:
     filesets:
@@ -24,3 +28,10 @@ targets:
       - "axi-files"
     toplevel: "olo_axi_master_full"
     default_tool: "vivado"
+
+  fifo-custom-target:
+    filesets:
+      - "fifo-custom-files"
+    toplevel: "olo_base_fifo_packet"
+    default_tool: "vivado"
+

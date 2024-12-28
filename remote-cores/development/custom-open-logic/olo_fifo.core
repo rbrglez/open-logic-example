@@ -1,0 +1,29 @@
+CAPI=2:
+
+name : open-logic-custom:open-logic-custom:fifo:3.0.2
+description : Fifo and dependencies from open-logic base
+
+filesets:
+  rtl:
+    files:
+      - src/base/vhdl/olo_base_pkg_math.vhd
+      - src/base/vhdl/olo_base_pkg_logic.vhd
+      - src/base/vhdl/olo_base_ram_sdp.vhd
+      - src/base/vhdl/olo_base_cc_bits.vhd
+      - src/base/vhdl/olo_base_cc_reset.vhd
+      - src/base/vhdl/olo_base_fifo_async.vhd
+      - src/base/vhdl/olo_base_fifo_sync.vhd
+      - src/base/vhdl/olo_base_fifo_packet.vhd
+    file_type : vhdlSource
+    logical_name : olo
+
+
+targets:
+  default:
+    filesets :
+      - rtl
+
+provider:
+  name: git
+  repo: git@github.com:open-logic/open-logic.git
+  version: 1336d94
